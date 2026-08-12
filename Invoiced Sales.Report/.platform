@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Invoiced Sales"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "882f1695-4acf-4f1e-9a4e-254c51ba9998"
+  }
+}

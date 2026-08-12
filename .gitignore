@@ -1,0 +1,4 @@
+# Power BI Project - machine-local files
+**/.pbi/localSettings.json
+**/*.abf
+**/cache.abf

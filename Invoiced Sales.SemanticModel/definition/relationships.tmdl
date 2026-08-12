@@ -1,0 +1,32 @@
+relationship 0e6e4252-95c4-4e0e-a4c8-874e5463ec4c
+	fromColumn: 'Invoiced Sales'.'Billing Date'
+	toColumn: Date.Date
+
+relationship 7dacb5b5-3b77-45fe-85f9-cdebc76b1d56
+	fromColumn: 'Invoiced Sales'.'Billing Document Type Code'
+	toColumn: 'Invoice Document Type'.'Billing Document Type Code'
+
+relationship a9b264e6-c155-4643-adc9-e01ad2b308ea
+	fromColumn: 'Invoiced Sales'.'Product Key'
+	toColumn: Product.'Product Key'
+
+relationship 2fe91495-a480-42d8-bcf5-63ce2f84e4d0
+	fromColumn: 'Invoiced Sales'.'Customer Key'
+	toColumn: Customer.'Customer Key'
+
+relationship 03e537eb-3ddb-4c20-b5ad-9090c0aadd0d
+	fromColumn: Customer.Station
+	toColumn: Region.Station
+
+relationship aee91ed3-e637-4150-a8d4-22619ecc0034
+	fromColumn: Product.'Sub Brand Name'
+	toColumn: Brand.'Sub Brand'
+
+relationship 4a26dc2c-f944-4c6e-9670-5e66e566c970
+	fromColumn: 'Exchange Rate'.Date
+	toColumn: Date.Date
+
+relationship 7a4bdc99-ebb9-4dc1-92bd-c20e0460b638
+	fromColumn: 'Invoiced Sales'.'Local Currency'
+	toColumn: 'Budget Rate'.'From Currency'
+
