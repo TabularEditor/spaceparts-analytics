@@ -114,6 +114,19 @@ table Customer
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Short label for Account Type: Key, Standard, or Private.
+	column 'Account Type Short' =
+			SWITCH(
+			    Customer[Account Type],
+			    "Private Buyer", "Private",
+			    "Key Account", "Key",
+			    "No Key Account", "Standard"
+			)
+		dataType: string
+		displayFolder: 2. Other Customer Attributes
+		lineageTag: 2e02788b-9cdc-426c-9d36-21cafa9cc75d
+		summarizeBy: none
+
 	hierarchy 'Customer Hierarchy'
 		displayFolder: 1. Customer Hierarchy
 		lineageTag: 21ce8263-4484-4671-9324-29eb1d5fb394
