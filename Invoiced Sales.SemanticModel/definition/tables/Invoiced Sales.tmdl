@@ -51,6 +51,7 @@ table 'Invoiced Sales'
 			        CALCULATE ( SUM ( 'Invoiced Sales'[Net Invoice Value] ) )
 			            - CALCULATE ( SUM ( 'Invoiced Sales'[Net Invoice COGS] ) )
 			            - CALCULATE ( SUM ( 'Invoiced Sales'[Delivery Cost] ) )
+			            - CALCULATE ( SUM ( 'Invoiced Sales'[Taxes & Commercial Fees] ) )
 			    ) / 'Budget Rate'[Rate]
 			)
 		displayFolder: Measures
