@@ -15,8 +15,8 @@ binary file:
 
 ## Part 1
 
-Read the article, "You're deploying it right this time (part 1)":
-https://tabulareditor.com/blog/youre-deploying-it-right-this-time-part-1
+Read the article, "Source control for semantic models: deploy it right (part 1)":
+https://tabulareditor.com/blog/source-control-for-semantic-models
 
 ### Read the history
 
@@ -52,9 +52,74 @@ Repos, choose Import repository, and paste this URL:
 https://github.com/TabularEditor/spaceparts-analytics.git
 ```
 
+## Part 2
+
+Read the article, "Validate every model change: deploy it right (part 2)":
+https://tabulareditor.com/blog/validate-every-model-change-with-a-pipeline
+
+Part 2 starts from the `part2` branch of this repository. The branch holds the
+model and the report as they are at the start of the article, plus the
+pipeline that the article builds:
+
+| Item | What it holds |
+| --- | --- |
+| `azure-pipelines.yml` | the pipeline for Azure DevOps |
+| `.github/workflows/invoiced-sales.yml` | the same pipeline for GitHub Actions |
+| `tools/te` | the folder for the TE CLI Linux archive, which you add yourself |
+
+### Start your own copy
+
+You need Git, the TE CLI, Python 3.10 or later, and pbir-cli. The article
+lists where to get each one. The checks read the project files, so you need no
+data, no Power BI Desktop and no database connection.
+
+Create your own empty repository on GitHub or in Azure DevOps. Then run these
+commands, with the URL of your repository in the fourth line:
+
+```
+git clone --branch part2 https://github.com/TabularEditor/spaceparts-analytics.git
+cd spaceparts-analytics
+git branch -m part2 main
+git remote set-url origin <your repository URL>
+git push -u origin main
+```
+
+### Run the checks on your machine
+
+Run the three checks from the repository folder:
+
+```
+te validate --model "Invoiced Sales.SemanticModel" --errors-only
+te bpa run --model "Invoiced Sales.SemanticModel"
+pbir validate "Invoiced Sales.Report" --fields --strict
+```
+
+At the start of part 2, `te validate` and `pbir validate` pass, and
+`te bpa run` reports four violations on the `Product Key` column, one of them
+at error level. The article shows how to fix them.
+
+### Set up the pipeline
+
+Both pipelines run on every push to `main`, and both need the TE CLI Linux
+archive in your repository:
+
+1. Download the Linux archive, `te-<version>-linux-x64.tar.gz`, from
+   https://tabulareditor.com/download-tabular-editor-cli
+2. Put the file in `tools/te`, then commit and push it.
+
+Until the archive is in `tools/te`, every run fails at the step that sets up
+the TE CLI.
+
+In Azure DevOps, open Pipelines, choose New pipeline, pick your repository,
+choose Existing Azure Pipelines YAML file, and select `/azure-pipelines.yml`.
+
+In GitHub, there is nothing to set up: GitHub Actions runs
+`.github/workflows/invoiced-sales.yml` on every push to `main`. You find the
+runs on the Actions tab of your repository.
+
 ## Later parts
 
-Parts 2 to 5 each start from their own branch in this repository, so
+Parts 3 to 5 each start from their own branch in this repository, so
 you can start at any part without doing the parts before it. Each branch
 appears here when that part of the series publishes.
 

@@ -1,0 +1,40 @@
+name: Invoiced Sales CI/CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  model:
+    name: Validate model
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Tabular Editor CLI
+        run: |
+          tar -xzf ./tools/te/te-*-linux-x64.tar.gz -C ./tools/te
+          echo "$GITHUB_WORKSPACE/tools/te" >> "$GITHUB_PATH"
+
+      - name: Validate model
+        run: te validate --model "Invoiced Sales.SemanticModel" --errors-only --ci github
+
+      - name: Best Practice Analyzer
+        run: te bpa run --model "Invoiced Sales.SemanticModel" --fail-on error --ci github
+
+  report:
+    name: Validate report
+    needs: model
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Set up pbir-cli
+        run: pip install pbir-cli==0.9.32
+
+      - name: Validate report
+        run: pbir validate "Invoiced Sales.Report" --fields --strict
