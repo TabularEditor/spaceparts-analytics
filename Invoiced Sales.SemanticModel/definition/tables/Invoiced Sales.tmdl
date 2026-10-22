@@ -646,6 +646,7 @@ table 'Invoiced Sales'
 
 	column 'Product Key'
 		dataType: int64
+		isAvailableInMdx: false
 		displayFolder: Columns\2. Keys
 		lineageTag: 2206902c-3b4b-4b19-bc0f-a4d1b133f937
 		summarizeBy: sum

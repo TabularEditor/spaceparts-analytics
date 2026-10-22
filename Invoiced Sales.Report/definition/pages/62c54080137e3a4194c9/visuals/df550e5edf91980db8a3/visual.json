@@ -167,12 +167,6 @@
     "objects": {
       "columnFormatting": [
         {
-          "properties": {},
-          "selector": {
-            "metadata": "Invoiced Sales.Units"
-          }
-        },
-        {
           "properties": {
             "styleTotal": {
               "expr": {

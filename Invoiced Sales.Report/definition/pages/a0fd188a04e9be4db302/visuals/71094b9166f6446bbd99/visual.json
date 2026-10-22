@@ -17,62 +17,47 @@
           "projections": [
             {
               "field": {
-                "HierarchyLevel": {
+                "Column": {
                   "Expression": {
-                    "Hierarchy": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Product"
-                        }
-                      },
-                      "Hierarchy": "Product Hierarchy"
+                    "SourceRef": {
+                      "Entity": "Product"
                     }
                   },
-                  "Level": "Subtype"
+                  "Property": "Subtype"
                 }
               },
-              "queryRef": "Product.Product Hierarchy.Subtype",
-              "nativeQueryRef": "Product Hierarchy Subtype",
+              "queryRef": "Product.Subtype",
+              "nativeQueryRef": "Subtype",
               "active": true
             },
             {
               "field": {
-                "HierarchyLevel": {
+                "Column": {
                   "Expression": {
-                    "Hierarchy": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Product"
-                        }
-                      },
-                      "Hierarchy": "Product Hierarchy"
+                    "SourceRef": {
+                      "Entity": "Product"
                     }
                   },
-                  "Level": "Product Name"
+                  "Property": "Product Name"
                 }
               },
-              "queryRef": "Product.Product Hierarchy.Product Name",
-              "nativeQueryRef": "Product Hierarchy Product Name",
+              "queryRef": "Product.Product Name",
+              "nativeQueryRef": "Product Name",
               "active": false
             },
             {
               "field": {
-                "HierarchyLevel": {
+                "Column": {
                   "Expression": {
-                    "Hierarchy": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Product"
-                        }
-                      },
-                      "Hierarchy": "Product Hierarchy"
+                    "SourceRef": {
+                      "Entity": "Product"
                     }
                   },
-                  "Level": "Material"
+                  "Property": "Material"
                 }
               },
-              "queryRef": "Product.Product Hierarchy.Material",
-              "nativeQueryRef": "Product Hierarchy Material",
+              "queryRef": "Product.Material",
+              "nativeQueryRef": "Material",
               "active": false
             }
           ]
@@ -90,7 +75,7 @@
                   "Property": "# Units Sold"
                 }
               },
-              "queryRef": "Invoiced Sales.Units",
+              "queryRef": "Invoiced Sales.# Units Sold",
               "nativeQueryRef": "Units Sold",
               "displayName": "Units Sold"
             },
@@ -181,7 +166,7 @@
         "levels": [
           {
             "queryRefs": [
-              "Product.Product Hierarchy.Subtype"
+              "Product.Subtype"
             ],
             "isCollapsed": true,
             "identityKeys": [
@@ -200,7 +185,7 @@
           },
           {
             "queryRefs": [
-              "Product.Product Hierarchy.Product Name"
+              "Product.Product Name"
             ],
             "isCollapsed": true,
             "identityKeys": [
@@ -219,7 +204,7 @@
           },
           {
             "queryRefs": [
-              "Product.Product Hierarchy.Material"
+              "Product.Material"
             ],
             "isCollapsed": true,
             "identityKeys": [
@@ -553,7 +538,7 @@
             }
           },
           "selector": {
-            "metadata": "Invoiced Sales.Units"
+            "metadata": "Invoiced Sales.# Units Sold"
           }
         },
         {
@@ -882,7 +867,7 @@
             }
           },
           "selector": {
-            "metadata": "Product.Product Hierarchy.Subtype"
+            "metadata": "Product.Subtype"
           }
         },
         {
@@ -896,7 +881,7 @@
             }
           },
           "selector": {
-            "metadata": "Invoiced Sales.Units"
+            "metadata": "Invoiced Sales.# Units Sold"
           }
         },
         {

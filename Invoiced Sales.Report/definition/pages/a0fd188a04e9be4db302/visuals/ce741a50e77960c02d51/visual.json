@@ -23,27 +23,11 @@
                       "Entity": "Date"
                     }
                   },
-                  "Property": "Calendar Year (ie 2021)"
+                  "Property": "Calendar Month Year (ie Jan 21)"
                 }
               },
-              "queryRef": "Date.Calendar Year (ie 2021)",
-              "nativeQueryRef": "Calendar Year (ie 2021)",
-              "active": true
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Date"
-                    }
-                  },
-                  "Property": "Calendar Month (ie Jan)"
-                }
-              },
-              "queryRef": "Date.Calendar Month (ie Jan)",
-              "nativeQueryRef": "Calendar Month (ie Jan)",
-              "active": true
+              "queryRef": "Date.Calendar Month Year (ie Jan 21)",
+              "nativeQueryRef": "Calendar Month Year (ie Jan 21)"
             }
           ]
         },
@@ -60,7 +44,7 @@
                   "Property": "CF - Current Incomplete and Last Complete Month Gross Margin %"
                 }
               },
-              "queryRef": "Invoiced Sales.ee",
+              "queryRef": "Invoiced Sales.CF - Current Incomplete and Last Complete Month Gross Margin %",
               "nativeQueryRef": "Current Month",
               "displayName": "Current Month"
             },
@@ -274,7 +258,7 @@
             }
           },
           "selector": {
-            "metadata": "Invoiced Sales.ee"
+            "metadata": "Invoiced Sales.CF - Current Incomplete and Last Complete Month Gross Margin %"
           }
         },
         {
@@ -327,6 +311,13 @@
                   }
                 }
               }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
             }
           }
         }
@@ -348,7 +339,7 @@
             }
           },
           "selector": {
-            "metadata": "Invoiced Sales.ee"
+            "metadata": "Invoiced Sales.CF - Current Incomplete and Last Complete Month Gross Margin %"
           }
         },
         {
@@ -511,7 +502,7 @@
             }
           },
           "selector": {
-            "metadata": "Invoiced Sales.ee"
+            "metadata": "Invoiced Sales.CF - Current Incomplete and Last Complete Month Gross Margin %"
           }
         },
         {
@@ -539,7 +530,7 @@
             }
           },
           "selector": {
-            "metadata": "Invoiced Sales.ee"
+            "metadata": "Invoiced Sales.CF - Current Incomplete and Last Complete Month Gross Margin %"
           }
         },
         {
@@ -565,7 +556,7 @@
                 }
               }
             ],
-            "metadata": "Invoiced Sales.ee",
+            "metadata": "Invoiced Sales.CF - Current Incomplete and Last Complete Month Gross Margin %",
             "highlightMatching": 1
           }
         },
