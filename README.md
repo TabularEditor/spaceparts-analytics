@@ -15,8 +15,8 @@ binary file:
 
 ## Part 1
 
-Read the article, "You're deploying it right this time (part 1)":
-https://tabulareditor.com/blog/youre-deploying-it-right-this-time-part-1
+Read the article, "Source control for semantic models: deploy it right (part 1)":
+https://tabulareditor.com/blog/source-control-for-semantic-models
 
 ### Read the history
 
