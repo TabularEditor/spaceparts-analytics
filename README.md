@@ -117,6 +117,91 @@ In GitHub, there is nothing to set up: GitHub Actions runs
 `.github/workflows/invoiced-sales.yml` on every push to `main`. You find the
 runs on the Actions tab of your repository.
 
+## Part 3
+
+Read the article, "Publish with a pipeline: deploy it right (part 3)":
+https://tabulareditor.com/blog/deploy-your-semantic-model-from-a-pipeline
+
+Part 3 starts from the `part3` branch of this repository. The branch holds the
+model and the report as they are at the end of part 2, plus the pipeline that
+part 3 builds: the checks from part 2, then a deploy of the model and the
+report to a Fabric workspace.
+
+| Item | What it holds |
+| --- | --- |
+| `azure-pipelines.yml` | the pipeline for Azure DevOps, with the `Deploy` stage |
+| `.github/workflows/invoiced-sales.yml` | the same pipeline for GitHub Actions, with the `deploy-model` and `deploy-report` jobs |
+| `tools/te` | the folder for the TE CLI Linux archive, which you add yourself |
+
+### What you need
+
+- A workspace on a Fabric or Premium capacity, with the capacity's XMLA
+  endpoint set to read-write.
+- The model published to that workspace once from Power BI Desktop, with its
+  data source credential set in the model's settings. A deploy from the
+  pipeline changes only the model's definition, so the model keeps that
+  credential and its data.
+- A service principal with a client secret, added to the workspace as
+  Contributor, and allowed in the tenant setting "Service principals can call
+  Fabric public APIs".
+
+### Start your own copy
+
+Run the same commands as in part 2, with `part3` in place of `part2`:
+
+```
+git clone --branch part3 https://github.com/TabularEditor/spaceparts-analytics.git
+cd spaceparts-analytics
+git branch -m part3 main
+git remote set-url origin <your repository URL>
+git push -u origin main
+```
+
+Then add the TE CLI Linux archive to `tools/te`, as in part 2.
+
+### Change the names
+
+Both pipeline files deploy to a workspace named `Order to Cash`, the
+workspace of the article. Replace `Order to Cash` with the name of your
+workspace in both files. If you renamed the model or the report, replace
+`Invoiced Sales` too. pbir-cli needs the `.Workspace`, `.SemanticModel` and
+`.Report` endings to tell which kind of item it handles, so keep those.
+
+### Give the pipeline the service principal's credentials
+
+The deploy steps sign in as the service principal with three values:
+`AZURE_TENANT_ID`, `AZURE_CLIENT_ID` and `AZURE_CLIENT_SECRET`.
+
+In Azure DevOps, open Pipelines, then Library, and create a variable group
+named `fabric-deploy` with those three variables. Mark `AZURE_CLIENT_SECRET`
+as secret with the lock icon. The first run that reaches the `Deploy` stage
+waits until someone who manages the variable group clicks Permit; later runs
+do not wait.
+
+In GitHub, open Settings, then Secrets and variables, then Actions, and add
+the three values as repository secrets with the same names.
+
+### Check which commit is live
+
+The pipeline writes the commit it deploys into the model and the report as the
+annotation `SourceCommit`. Read the model's annotation back from the workspace
+with the TE CLI:
+
+```
+te query -s "Order to Cash" -d "Invoiced Sales" -q 'EVALUATE FILTER(INFO.ANNOTATIONS(), [Name] = "SourceCommit")'
+```
+
+This works in PowerShell 7 and in bash. The article shows the quoting for the
+command prompt and for Windows PowerShell 5.1.
+
+Read the report's annotation with pbir-cli, from an empty folder:
+
+```
+pbir download "Order to Cash.Workspace/Invoiced Sales.Report" -o live
+cd live
+pbir annotations list "Invoiced Sales.Report"
+```
+
 ## Later parts
 
 Parts 3 to 5 each start from their own branch in this repository, so

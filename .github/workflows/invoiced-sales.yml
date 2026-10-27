@@ -7,7 +7,7 @@ on:
 jobs:
   model:
     name: Validate model
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
 
@@ -25,7 +25,7 @@ jobs:
   report:
     name: Validate report
     needs: model
-    runs-on: windows-latest
+    runs-on: windows-2025
     steps:
       - uses: actions/checkout@v5
 
@@ -38,3 +38,63 @@ jobs:
 
       - name: Validate report
         run: pbir validate "Invoiced Sales.Report" --fields --strict
+
+  deploy-model:
+    name: Deploy model
+    needs: [model, report]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Tabular Editor CLI
+        run: |
+          tar -xzf ./tools/te/te-*-linux-x64.tar.gz -C ./tools/te
+          echo "$GITHUB_WORKSPACE/tools/te" >> "$GITHUB_PATH"
+
+      - name: Record source commit
+        run: te set . -p "Annotations[SourceCommit]=$GITHUB_SHA" --model "Invoiced Sales.SemanticModel" --save
+
+      - name: Deploy model to workspace
+        run: te deploy --model "Invoiced Sales.SemanticModel" --target-server "Order to Cash" --target-database "Invoiced Sales" --auth env --execute --force --ci github
+        env:
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+      - name: Recalculate model
+        run: te refresh --type calculate -s "Order to Cash" -d "Invoiced Sales" --auth env --execute --force --no-progress
+        env:
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+  deploy-report:
+    name: Deploy report
+    needs: deploy-model
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Set up pbir-cli
+        run: pip install pbir-cli==0.9.32
+
+      - name: Record source commit in report
+        run: pbir add annotation "Invoiced Sales.Report" --name SourceCommit --value $env:GITHUB_SHA
+
+      - name: Connect report to workspace model
+        run: pbir report rebind "Invoiced Sales.Report" "Order to Cash.Workspace/Invoiced Sales.SemanticModel"
+        env:
+          FAB_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          FAB_SPN_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          FAB_SPN_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+      - name: Publish report to workspace
+        run: pbir publish "Invoiced Sales.Report" "Order to Cash.Workspace/Invoiced Sales.Report" -f
+        env:
+          FAB_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          FAB_SPN_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          FAB_SPN_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}

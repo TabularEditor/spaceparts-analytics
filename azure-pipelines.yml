@@ -9,7 +9,7 @@ stages:
       - job: Model
         displayName: Validate model
         pool:
-          vmImage: ubuntu-latest
+          vmImage: ubuntu-24.04
         steps:
           - checkout: self
 
@@ -28,7 +28,7 @@ stages:
         displayName: Validate report
         dependsOn: Model
         pool:
-          vmImage: windows-latest
+          vmImage: windows-2025
         steps:
           - checkout: self
 
@@ -41,3 +41,65 @@ stages:
 
           - script: pbir validate "Invoiced Sales.Report" --fields --strict
             displayName: Validate report
+
+  - stage: Deploy
+    dependsOn: Validate
+    variables:
+      - group: fabric-deploy
+    jobs:
+      - job: Model
+        displayName: Deploy model
+        pool:
+          vmImage: ubuntu-24.04
+        steps:
+          - checkout: self
+
+          - script: |
+              tar -xzf ./tools/te/te-*-linux-x64.tar.gz -C ./tools/te
+              echo "##vso[task.prependpath]$(Build.SourcesDirectory)/tools/te"
+            displayName: Set up Tabular Editor CLI
+
+          - script: te set . -p "Annotations[SourceCommit]=$(Build.SourceVersion)" --model "Invoiced Sales.SemanticModel" --save
+            displayName: Record source commit
+
+          - script: te deploy --model "Invoiced Sales.SemanticModel" --target-server "Order to Cash" --target-database "Invoiced Sales" --auth env --execute --force --ci azure-devops
+            displayName: Deploy model to workspace
+            env:
+              AZURE_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
+
+          - script: te refresh --type calculate -s "Order to Cash" -d "Invoiced Sales" --auth env --execute --force --no-progress
+            displayName: Recalculate model
+            env:
+              AZURE_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
+
+      - job: Report
+        displayName: Deploy report
+        dependsOn: Model
+        pool:
+          vmImage: windows-2025
+        steps:
+          - checkout: self
+
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: "3.12"
+
+          - script: pip install pbir-cli==0.9.32
+            displayName: Set up pbir-cli
+
+          - script: pbir add annotation "Invoiced Sales.Report" --name SourceCommit --value $(Build.SourceVersion)
+            displayName: Record source commit in report
+
+          - script: pbir report rebind "Invoiced Sales.Report" "Order to Cash.Workspace/Invoiced Sales.SemanticModel"
+            displayName: Connect report to workspace model
+            env:
+              FAB_TENANT_ID: $(AZURE_TENANT_ID)
+              FAB_SPN_CLIENT_ID: $(AZURE_CLIENT_ID)
+              FAB_SPN_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
+
+          - script: pbir publish "Invoiced Sales.Report" "Order to Cash.Workspace/Invoiced Sales.Report" -f
+            displayName: Publish report to workspace
+            env:
+              FAB_TENANT_ID: $(AZURE_TENANT_ID)
+              FAB_SPN_CLIENT_ID: $(AZURE_CLIENT_ID)
+              FAB_SPN_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
