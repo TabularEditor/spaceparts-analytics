@@ -251,7 +251,7 @@ table 'Invoiced Sales'
 		lineageTag: 8f6ed42f-8b8a-492d-bb63-1b1bd654a2c3
 
 	/// Total shipped units (Net Invoice Quantity).
-	measure '# Units Sold' = SUM ( 'Invoiced Sales'[Net Invoice Quantity] )
+	measure 'Units Sold' = SUM ( 'Invoiced Sales'[Net Invoice Quantity] )
 		displayFolder: Measures
 		lineageTag: f1000001-0001-0001-0001-000000000010
 
@@ -387,7 +387,7 @@ table 'Invoiced Sales'
 			                2, CALCULATE ( [Gross Profit] ),
 			                3, CALCULATE ( [# Invoice Lines] ),
 			                4, CALCULATE ( [Revenue] ),
-			                5, CALCULATE ( [# Units Sold] )
+			                5, CALCULATE ( [Units Sold] )
 			            )
 			    )
 			VAR _Min = MINX ( _Table, [@v] )
@@ -414,7 +414,7 @@ table 'Invoiced Sales'
 			                2, CALCULATE ( [Gross Profit] ),
 			                3, CALCULATE ( [# Invoice Lines] ),
 			                4, CALCULATE ( [Revenue] ),
-			                5, CALCULATE ( [# Units Sold] )
+			                5, CALCULATE ( [Units Sold] )
 			            )
 			    )
 			VAR _Min = MINX ( _Table, [@v] )
@@ -441,7 +441,7 @@ table 'Invoiced Sales'
 			                2, CALCULATE ( [Gross Profit] ),
 			                3, CALCULATE ( [# Invoice Lines] ),
 			                4, CALCULATE ( [Revenue] ),
-			                5, CALCULATE ( [# Units Sold] )
+			                5, CALCULATE ( [Units Sold] )
 			            )
 			    )
 			VAR _Min = MINX ( _Table, [@v] )
@@ -468,7 +468,7 @@ table 'Invoiced Sales'
 			                2, CALCULATE ( [Gross Profit] ),
 			                3, CALCULATE ( [# Invoice Lines] ),
 			                4, CALCULATE ( [Revenue] ),
-			                5, CALCULATE ( [# Units Sold] )
+			                5, CALCULATE ( [Units Sold] )
 			            )
 			    )
 			VAR _Min = MINX ( _Table, [@v] )
@@ -593,6 +593,11 @@ table 'Invoiced Sales'
 		displayFolder: Measures\Report Objects
 		lineageTag: a14a0001-0001-0001-0001-000000000102
 
+	/// Revenue divided by the number of units sold.
+	measure 'Revenue per Unit' = DIVIDE ( [Revenue], [Units Sold] )
+		formatString: #,##0.00
+		lineageTag: f450a497-fb9d-4d4a-bdae-cfcfdef86a7e
+
 	column 'Billing Document Number'
 		dataType: string
 		isHidden
@@ -646,10 +651,11 @@ table 'Invoiced Sales'
 
 	column 'Product Key'
 		dataType: int64
+		isHidden
 		isAvailableInMdx: false
 		displayFolder: Columns\2. Keys
 		lineageTag: 2206902c-3b4b-4b19-bc0f-a4d1b133f937
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: Product Key
 
 		annotation SummarizationSetBy = Automatic

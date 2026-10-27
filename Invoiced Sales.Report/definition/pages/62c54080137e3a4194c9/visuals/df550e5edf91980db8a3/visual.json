@@ -95,11 +95,11 @@
                       "Entity": "Invoiced Sales"
                     }
                   },
-                  "Property": "# Units Sold"
+                  "Property": "Units Sold"
                 }
               },
-              "queryRef": "Invoiced Sales.# Units Sold",
-              "nativeQueryRef": "# Units Sold"
+              "queryRef": "Invoiced Sales.Units Sold",
+              "nativeQueryRef": "Units Sold"
             },
             {
               "field": {
@@ -254,7 +254,7 @@
             }
           },
           "selector": {
-            "metadata": "Invoiced Sales.# Units Sold"
+            "metadata": "Invoiced Sales.Units Sold"
           }
         },
         {
@@ -550,7 +550,7 @@
             }
           },
           "selector": {
-            "metadata": "Invoiced Sales.# Units Sold"
+            "metadata": "Invoiced Sales.Units Sold"
           }
         },
         {

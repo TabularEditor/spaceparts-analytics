@@ -47,7 +47,7 @@ table MetricSelector
 				    ("Gross Profit", NAMEOF('Invoiced Sales'[Gross Profit]), 2),
 				    ("Invoice Lines", NAMEOF('Invoiced Sales'[# Invoice Lines]), 3),
 				    ("Revenue", NAMEOF('Invoiced Sales'[Revenue]), 4),
-				    ("Units", NAMEOF('Invoiced Sales'[# Units Sold]), 5)
+				    ("Units", NAMEOF('Invoiced Sales'[Units Sold]), 5)
 				}
 
 	annotation ParameterMetadata = {"version":3,"kind":2}

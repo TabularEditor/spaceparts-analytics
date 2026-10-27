@@ -47,7 +47,7 @@ table ScatterChartYMetricSelector
 				    ("Gross Profit", NAMEOF('Invoiced Sales'[Gross Profit]), 2),
 				    ("Invoice Lines", NAMEOF('Invoiced Sales'[# Invoice Lines]), 3),
 				    ("Revenue", NAMEOF('Invoiced Sales'[Revenue]), 4),
-				    ("Units", NAMEOF('Invoiced Sales'[# Units Sold]), 5)
+				    ("Units", NAMEOF('Invoiced Sales'[Units Sold]), 5)
 				}
 
 	annotation PBI_Id = 893d8f661e114c69be8f99dec539577f

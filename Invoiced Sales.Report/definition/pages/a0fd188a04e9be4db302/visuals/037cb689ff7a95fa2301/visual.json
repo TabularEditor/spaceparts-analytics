@@ -43,7 +43,7 @@
                       "Entity": "Invoiced Sales"
                     }
                   },
-                  "Property": "# Units Sold"
+                  "Property": "Units Sold"
                 }
               },
               "queryRef": "Invoiced Sales.Units",
@@ -411,7 +411,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'\u25c6 sized by Units Sold'"
+                  "Value": "'◆ sized by Units Sold'"
                 }
               }
             },
@@ -491,7 +491,7 @@
                 "Entity": "Invoiced Sales"
               }
             },
-            "Property": "# Units Sold"
+            "Property": "Units Sold"
           }
         },
         "type": "Advanced"
